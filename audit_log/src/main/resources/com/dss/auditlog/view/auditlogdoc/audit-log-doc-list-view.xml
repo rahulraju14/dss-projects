@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://auditLogDocListView.title"
+      focusComponent="auditLogDocsDataGrid">
+    <data>
+        <collection id="auditLogDocsDc"
+                    class="com.dss.auditlog.elasticsearch.documents.AuditLogDoc">
+            <loader id="auditLogDocsDl" readOnly="true">
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <pagination component="pagination"/>
+<!--            <dataGridFilter component="auditLogDocsDataGrid"/>-->
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+<!--        <comboBox id="yearFilter" datatype="int" label="FY Year:" title="fy" clearButtonVisible="false" />-->
+        <hbox width="100%" spacing="true" alignItems="BASELINE">
+            <comboBox id="dateFilter" itemsEnum="com.dss.auditlog.entity.DateRange" label="Period:" title="Periods" clearButtonVisible="true"/>
+            <datePicker id="dateFrom" label="From:" dateFormat="dd/MM/yyyy" clearButtonVisible="true" />
+            <datePicker id="dateTo" label="To:" dateFormat="dd/MM/yyyy" clearButtonVisible="true"/>
+            <button id="btApplyDateFilter" title="Apply" text="Apply"/>
+        </hbox>
+        <span css="font-size: 12px; font-weight: bold; color: red;" text="* Apply a 12-month or shorter filter for faster and more precise results."/>
+        <hbox id="buttonsPanel" classNames="buttons-panel" expand="spacer">
+            <button id="refreshBtn" action="auditLogDocsDataGrid.refresh"/>
+            <button id="excelExportBtn" action="auditLogDocsDataGrid.excelExport"  />
+            <button id="clearHeaderFilter" text="Clear Filter"/>
+            <hbox id="spacer"/>
+            <simplePagination id="pagination" dataLoader="auditLogDocsDl" itemsPerPageDefaultValue="1000" itemsPerPageItems="100, 200, 500, 1000"
+                              itemsPerPageUnlimitedItemVisible="true" itemsPerPageVisible="true" autoLoad="true"/>
+            <gridColumnVisibility dataGrid="auditLogDocsDataGrid"
+                                  icon="COG"
+                                  themeNames="icon"
+                                  exclude="entryNo, documentType, documentNo">
+            </gridColumnVisibility>
+        </hbox>
+        <dataGrid id="auditLogDocsDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="auditLogDocsDc"
+                  columnReorderingAllowed="true"
+                  multiSort="false"
+                  selectionMode="SINGLE">
+            <actions>
+                <action id="excelExport" type="grdexp_custom_excelExport" />
+                <action id="refresh" type="list_refresh"/>
+            </actions>
+            <columns resizable="true" sortable="true">
+                <column property="entryNo" width="150px" filterable="true" frozen="true" sortable="true">
+                    <numberRenderer numberFormat="############"/>
+                </column>
+                <column  property="createdDate" autoWidth="true" filterable="false" frozen="true" />
+                <column property="documentNo" autoWidth="true" filterable="true" frozen="true"/>
+
+                <column property="createdBy" autoWidth="true" filterable="true"/>
+                <column property="documentType" width="150px" filterable="true" />
+                <column property="tableCaption" autoWidth="true" filterable="true"/>
+                <column property="tableNo" autoWidth="true" filterable="true" >
+                    <numberRenderer numberFormat="############"/>
+                </column>
+                <column property="fieldCaption" autoWidth="true" filterable="true" />
+                <column property="typeOfChange" autoWidth="true" filterable="true">
+                </column>
+                <column property="oldValue" autoWidth="true"  filterable="true"/>
+                <column property="newValue" autoWidth="true" filterable="true"/>
+                <column property="referenceDescription"  autoWidth="true" filterable="true"/>
+                <column property="primaryKeyField1Description" autoWidth="true" filterable="true"/>
+                <column property="primaryKeyField1Value" autoWidth="true" filterable="true"/>
+                <column property="primaryKeyField2Description" autoWidth="true" filterable="true"/>
+                <column property="primaryKeyField2Value" autoWidth="true" filterable="true" />
+                <column property="primaryKeyField3Description" autoWidth="true" filterable="true"/>
+                <column property="primaryKeyField3Value" autoWidth="true" filterable="true"/>
+                <column property="primaryKey" autoWidth="true"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>

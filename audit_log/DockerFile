@@ -1,0 +1,10 @@
+FROM gradle:8.6-jdk17-alpine as builder
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle -Pvaadin.productionMode=true  clean build -x test
+
+FROM eclipse-temurin:17-jdk-alpine
+EXPOSE 8080
+RUN apk add --no-cache openssl
+COPY --from=builder /home/gradle/src/build/libs/AuditLog-0.0.1-SNAPSHOT.jar /app/AuditLog-0.0.1-SNAPSHOT.jar
+WORKDIR /app

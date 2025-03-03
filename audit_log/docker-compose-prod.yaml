@@ -1,0 +1,133 @@
+name: audit_log_prod
+services:
+  postgres:
+    env_file:
+      - path: ./.env
+    image: postgres:15.5-bullseye
+    container_name: ${COMPOSE_PROJECT_NAME}_db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 60s
+      retries: 3
+    volumes:
+      - ${HOME}/docker/${COMPOSE_PROJECT_NAME}/postgres/data:/var/lib/postgresql/data
+    networks:
+      - opensearch-net
+
+  node-0.example.com:
+    image: opensearchproject/opensearch:latest
+    container_name: node-0.example.com
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=node-0.example.com
+      - discovery.seed_hosts=node-0.example.com,opensearch-node2
+      - cluster.initial_cluster_manager_nodes=node-0.example.com,opensearch-node2
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms2g -Xmx2g"
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_ADMIN_PASSWORD}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - opensearch-data1:/usr/share/opensearch/data
+      - opensearch-certs:/usr/share/opensearch/config
+    ports:
+      - 9200:9200
+      - 9600:9600
+    healthcheck:
+      test: ["CMD", "curl", "-k", "-f", "-u", "${OPENSEARCH_USERNAME}:${OPENSEARCH_ADMIN_PASSWORD}", "https://node-0.example.com:9200/_cluster/health"]
+      interval: 10s
+      timeout: 2700s
+      retries: 30
+    networks:
+      - opensearch-net 
+
+  opensearch-node2:
+    image: opensearchproject/opensearch:latest
+    container_name: opensearch-node2
+    environment:
+      - cluster.name=opensearch-cluster
+      - node.name=opensearch-node2
+      - discovery.seed_hosts=node-0.example.com,opensearch-node2
+      - cluster.initial_cluster_manager_nodes=node-0.example.com,opensearch-node2
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms2g -Xmx2g"
+      - OPENSEARCH_INITIAL_ADMIN_PASSWORD=${OPENSEARCH_ADMIN_PASSWORD}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    volumes:
+      - opensearch-data2:/usr/share/opensearch/data
+    networks:
+      - opensearch-net
+
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: opensearch-dashboards
+    ports:
+      - 5601:5601
+    expose:
+      - "5601" 
+    environment:
+      OPENSEARCH_HOSTS: '["https://node-0.example.com:9200","https://opensearch-node2:9200"]' 
+    networks:
+      - opensearch-net
+
+  audit-log-app:
+    env_file:
+      - path: ./.env
+    build:
+      context: .
+      dockerfile: ./DockerFile
+    container_name: ${COMPOSE_PROJECT_NAME}_audit_log_app
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      node-0.example.com:
+        condition: service_healthy
+    environment:
+      MAIN_DATASOURCE_URL: ${MAIN_DATASOURCE_URL}
+      MAIN_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      MAIN_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      SERVER_SSL_ENABLED: "true"
+      SERVER_SSL_KEY_STORE: ${SSL_KEY_STORE_PATH}
+      SERVER_SSL_KEY_STORE_PASSWORD: ${SSL_KEY_STORE_PASS}
+      SERVER_SSL_KEY_PASSWORD: ${SSL_KEY_STORE_PASS}
+      SERVER_SSL_KEY_ALIAS: ${SSL_KEY_ALIAS}
+      SERVER_SSL_KEY_STORE_TYPE: PKCS12
+    networks:
+      - opensearch-net
+    ports:
+      - ${SERVER_PORT}:${SERVER_PORT}
+    volumes:
+      - opensearch-certs:/app/keystore
+      - ./src/main/resources/scripts/audit-log-init.sh:/app/keystore/audit-log-init.sh
+      - opensearch-logs:/app/logs
+
+    command:
+      ["/bin/sh", "-c", "chmod +x /app/keystore/audit-log-init.sh && /app/keystore/audit-log-init.sh"]
+
+volumes:
+  opensearch-data1:
+  opensearch-data2:
+  opensearch-certs:
+  opensearch-logs:
+
+networks:
+  opensearch-net:

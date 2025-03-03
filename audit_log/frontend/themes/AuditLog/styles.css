@@ -1,0 +1,25 @@
+@import url('./AuditLog.css');
+#mainViewTopClearBtn {
+    font-size: 11px;
+	color: red;
+	border-radius: 30px;
+	height: 20px;
+}
+#mainViewTopClearBtn:hover {
+    cursor: pointer;
+}
+#closeIcon:hover {
+    cursor: pointer;
+}
+#clearBtnComp {
+    margin-right: 12px;
+	padding: 0;
+	justify-content: end;
+	min-height: 0;
+}
+[id^="progressBar_Menu_"] {
+    font-size: 13px;
+}
+#dashboardCompColumn:hover {
+    cursor: pointer;
+}

@@ -1,0 +1,12 @@
+stages:
+  - dev-branch-autodeploy
+
+dev-branch-autodeploy:
+  stage: dev-branch-autodeploy
+  script:
+    # - ansible-playbook $SCRIPT -i $INVEN -u $USER -e branch=$CI_COMMIT_BRANCH -e work_space=$CI_PROJECT_DIR --limit bpo_automation
+    - ansible-playbook $SCRIPT2 -i $INVEN -u $USER -e branch=$CI_COMMIT_BRANCH -e work_space=$CI_PROJECT_DIR --limit vm-azuredevops
+  only:
+    - dev
+  tags:
+    - shell_executor45
