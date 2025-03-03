@@ -1,0 +1,227 @@
+{
+  "start": 0,
+  "length": 10,
+  "draw": 1,
+  "order": [
+    {
+      "column": 0,
+      "dir": "asc"
+    }
+  ],
+  "search": {
+    "value": "",
+    "regex": false
+  },
+  "columns": [
+    {
+      "data": null,
+      "name": "",
+      "searchable": true,
+      "orderable": false,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "itemKey.lasKey",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "itemKey.itemNumber",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "styleNumber",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "descriptionDE",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "descriptionEN",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "itemKey.season",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "primalSeason",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "bestWgFtKz",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "bestWgOtNr",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "bestWgKatartKz",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "bestWgUnterWgNr",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "brandId",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "brandLabel",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "itemKey.inventoryCompanyId",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "marketGroupKz",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "marketGroupLabel",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "licenseCosts",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "licenseContracts",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "licenseFree",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    },
+    {
+      "data": "versionDate",
+      "name": "",
+      "searchable": true,
+      "orderable": true,
+      "search": {
+        "value": "",
+        "regex": false
+      }
+    }
+  ]
+}
